@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:c="http://java.sun.com/jsp/jstl/core"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>index.xhtml</title>
+    </h:head>
+
+    <h:body>
+
+        <h1>DATABASE</h1>
+
+        <!--<h:dataTable value="#{BDDContact.getIDList()}" var="u" border="1">
+
+            <h:column>
+                <f:facet name="header">
+                    User ID
+                </f:facet>
+            #{u.idObjet}
+            </h:column>
+
+
+
+        </h:dataTable>
+
+        <h:dataTable value="#{BDDContact.getCaracteristiqueList()}" var="carac" border="1">
+
+            <h:column>
+                <f:facet name="header">
+                    User ID
+                </f:facet>
+                    #{carac.idCar}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    desc
+                </f:facet>
+            #{carac.caracDesc}
+            </h:column>
+
+        </h:dataTable>
+        
+         <h:dataTable value="#{BDDContact.connectUserFromBDDWithLoginAndPwd('nserge','nserge')}" var="objet1" border="1">
+
+            <h:column>
+                <f:facet name="header">
+                    User ID
+                </f:facet>
+                    #{objet1.getLogin()}
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    desc
+                </f:facet>
+                #{objet1.getNom()}
+            </h:column>
+
+        </h:dataTable>-->
+ 
+       <p:chart type="line" model="#{chart.lineModel2}" style="height:300px;"/>
+        
+        <p:dock position="bottom">
+            <p:menuitem value="Accueil" icon="accueil.gif" url="/"/>
+            <p:menuitem value="Détails" icon="images.jpeg" url="detail.xhtml"/>
+            <p:menuitem value="Stock" icon="index.jpeg" url="stock.xhtml"/>
+        </p:dock>
+    </h:body>
+
+</html>
