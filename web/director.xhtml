@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:c="http://java.sun.com/jsp/jstl/core"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>index.xhtml</title>
+    </h:head>
+
+    <h:body>
+        <center>
+            <h1 style="color: #0000FF">Bienvenu directeur #{BDDContact.getDirecteurFromBDDWithID(1).getNom()}</h1>
+        </center>
+        
+       <p:chart type="line" model="#{chart.lineModel2}" style="height:400px;width:50%;"/>
+       
+        <p:chart id="pie1" widgetVar="pie" type="pie" model="#{chart.pieModel1}" style="height:400px;width:40%;position: relative;left: 55%; top:-400px;">
+            <p:dialog header="Vendeurs" widgetVar="dlg2" modal="true" height="100">
+                <p:dataTable var="seller" value="#{BDDContact.getDirecteurFromBDDWithID(1).sellerList}" rows="5" paginator="true">
+                    <p:column headerText="Nom">
+                        <h:outputText value="#{seller.nom}" />
+                    </p:column>
+ 
+                    <p:column headerText="Total vendu">
+                        <h:outputText value="#{seller.getTotal()}" />
+                    </p:column>
+ 
+                    <p:column headerText="Login">
+                        <h:outputText value="#{seller.login}" />
+                    </p:column>
+ 
+                </p:dataTable>
+            </p:dialog>
+            <p:ajax onstart="PF('dlg2').show();"/>
+        </p:chart>
+       
+           
+       <h:form>
+       <p:dock position="bottom" itemWidth="70">
+            <p:menuitem value="Accueil" icon="Ressources/accueil.gif" action="index"/>
+            <p:menuitem value="Détails" icon="Ressources/images.jpeg" action="detail" />
+            <p:menuitem value="Stock" icon="Ressources/index.jpeg" action="stock" />
+        </p:dock>
+       </h:form>
+    </h:body>
+
+</html>
