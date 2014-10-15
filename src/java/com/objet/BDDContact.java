@@ -662,4 +662,6 @@ public static void insertInBDD(String query){
         return u;
     }
     
+    
+    
 }
