@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:c="http://java.sun.com/jsp/jstl/core"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Stock</title>
+    </h:head>
+
+    <h:body>
+         
+       <h:form id="form">
+<p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="170">
+        <p:outputPanel id="carDetail" style="text-align:center;" layout="block">
+            <p:panelGrid  columns="2" rendered="#{not empty ringView.selectedCar}" columnClasses="value">
+                <f:facet name="">
+                    <p:graphicImage name="Ressources/Pedro.jpg"/>  
+                </f:facet>
+ 
+                <h:outputText value="Id:" />
+                <h:outputText value="#{ringView.selectedCar.id}" />
+ 
+                <h:outputText value="nom" />
+                <h:outputText value="#{ringView.selectedCar.nom}" />
+ 
+                <h:outputText value="prenom " />
+                <h:outputText value="#{ringView.selectedCar.prenom}" />
+ 
+                <h:outputText value="log" />
+                <h:outputText value="#{ringView.selectedCar.login}" />
+            </p:panelGrid>
+        </p:outputPanel>
+    </p:dialog>
+           <p:ring id="custom" value="#{ringView.cars}" var="car" styleClass="image-ring" easing="easeInOutBack">
+        <p:graphicImage id="img" name="/Ressources/#{car.nom}.jpg"/>
+        <p:commandButton update=":form:carDetail" icon="ui-icon-search" title="View" oncomplete="PF('carDialog').show();">
+            <f:setPropertyActionListener value="#{car}" target="#{ringView.selectedCar}" />
+        </p:commandButton>
+    </p:ring>
+ 
+   
+</h:form>
+       <h:form>
+       <p:dock position="bottom" itemWidth="70">
+            <p:menuitem value="Accueil" icon="Ressources/accueil.gif" action="index"/>
+            <p:menuitem value="Détails" icon="Ressources/images.jpeg" action="detail" />
+            <p:menuitem value="Stock" icon="Ressources/index.jpeg" action="stock" />
+        </p:dock>
+       </h:form>
+    </h:body>
+
+</html>

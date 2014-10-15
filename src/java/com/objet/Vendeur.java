@@ -34,4 +34,18 @@ public class Vendeur extends User implements Serializable{
         super(log,pass,name,first);
         OeuvreVendu=list;
     }
+    
+    public float getTotal(){
+        float total=0x0;
+           for (Oeuvre oeuvre : OeuvreVendu ){
+               total=total+oeuvre.getPrixVendu();
+           }
+        return total;
+    }
+    
+    @Override
+    public String getRole(){
+        return "Vendeur";
+    }
+    
 }
