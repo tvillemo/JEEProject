@@ -7,45 +7,83 @@
    xmlns:c="http://java.sun.com/jsp/jstl/core"
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:p="http://primefaces.org/ui">
+
+    
     <h:head>
-        <title>index.xhtml</title>
+        <meta charset="utf-8" />
+        <style>
+            body
+            {
+                text-align: left ;
+                font-size:medium;
+                font-family:Verdana, sans-serif;
+                min-height: 100%;
+            }
+            
+            html {
+                height: 100%;
+                min-height: 100%;
+            }
+
+            h1
+            {
+                font-size:large;
+                font-family:Verdana, sans-serif;
+            }
+
+            p
+            {
+                text-align: justify ;
+                text-indent: 2em ;
+                line-height: 1.7em ;
+            }
+            zoom {
+                height:400px;
+                margin:auto;
+            }
+            .zoom p {
+                text-align:left;
+            }
+            .zoom img {
+                width:160px;
+                height:140px;
+                border-image:2px;
+            }
+            .zoom img:hover {
+                width:400px;
+                height:300px;
+            }
+        </style>
+        
+        <title>Bienvenue dans notre Galerie en ligne</title>
     </h:head>
 
-    <h:body>
-        <center>
-            <h1 style="color: #0000FF">Bienvenu directeur #{BDDContact.getDirecteurFromBDDWithID(1).getNom()}</h1>
-        </center>
+    <h:body style="background-image:linear-gradient(#E0CDA9 75%,#677179)">
+
+        <h1>Nous</h1>
+            <p>Nous sommes un groupe de passonnés d'art en tout genre : du classique au contemporain souhaitant vous faire connaitre des artistes locaux ou internationnaux. </p>
+            <p>Notre objectif est de partager avec vous nos découvertes autant des oeuvres que des artistes.</p>
+            <p>Venez nous rencontrer !!!</p>
+            <br></br>
+            
+        <h1>Nous situer</h1>
+            <p>Notre galerie d'art possede une enseigne physique dans le centre ville de Poitiers (86, Viennes).</p>
+            <p>Nous situer :</p>
+            <br></br>
+            <div class="zoom">
+                <p>
+                    <img src="poit.jpg" alt="Situation dans Poitiers" />
+                </p>
+            </div>
         
-       <p:chart type="line" model="#{chart.lineModel2}" style="height:400px;width:50%;"/>
-       
-        <p:chart id="pie1" widgetVar="pie" type="pie" model="#{chart.pieModel1}" style="height:400px;width:40%;position: relative;left: 55%; top:-400px;">
-            <p:dialog header="Vendeurs" widgetVar="dlg2" modal="true" height="100">
-                <p:dataTable var="seller" value="#{BDDContact.getDirecteurFromBDDWithID(1).sellerList}" rows="5" paginator="true">
-                    <p:column headerText="Nom">
-                        <h:outputText value="#{seller.nom}" />
-                    </p:column>
- 
-                    <p:column headerText="Total vendu">
-                        <h:outputText value="#{seller.getTotal()}" />
-                    </p:column>
- 
-                    <p:column headerText="Login">
-                        <h:outputText value="#{seller.login}" />
-                    </p:column>
- 
-                </p:dataTable>
-            </p:dialog>
-            <p:ajax onstart="PF('dlg2').show();"/>
-        </p:chart>
-       
-           
-       <h:form>
-       <p:dock position="bottom" itemWidth="70">
-            <p:menuitem value="Accueil" icon="Ressources/accueil.gif" action="index"/>
-            <p:menuitem value="Détails" icon="Ressources/images.jpeg" action="detail" />
-            <p:menuitem value="Stock" icon="Ressources/index.jpeg" action="stock" />
+    <h:form>
+        <p:dock position="bottom" itemWidth ="100">
+                <p:menuitem value="Accueil" icon="nous.jpg" action="index"/>
+                <p:menuitem value="Oeuvres" icon="oeuvre.jpg" action="oeuvres"/>
+                <p:menuitem value="Artistes" icon="artiste.jpg" action="artistes"/>
+                <p:menuitem value="Connexion" icon="connect.jpg" action="connexion"/>
         </p:dock>
-       </h:form>
+    </h:form> 
     </h:body>
 
 </html>
