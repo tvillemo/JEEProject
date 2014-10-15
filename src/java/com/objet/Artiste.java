@@ -33,4 +33,9 @@ public class Artiste extends User{
         OeuvreList=list;
     }
     
+        @Override
+    public String getRole(){
+        return "Artiste";
+    }
+    
 }

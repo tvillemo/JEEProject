@@ -1,29 +1,27 @@
 package com.objet;
- 
+
 import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
-import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
-import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.LineChartSeries;
  
 @ManagedBean
 public class Chart implements Serializable {
  
-    private CartesianChartModel lineModel1;
+    private MyPieChart pieModel1;
     private LineChartModel lineModel2;
-     
+    
     @PostConstruct
     public void init() {
         createLineModels();
+        createPieModel1();
     }
  
-    public CartesianChartModel getLineModel1() {
-        return lineModel1;
+    public MyPieChart getPieModel1() {
+        return pieModel1;
     }
  
     public LineChartModel getLineModel2() {
@@ -31,12 +29,7 @@ public class Chart implements Serializable {
     }
      
     private void createLineModels() {
-        lineModel1 = initLinearModel();
-        lineModel1.setTitle("Linear Chart");
-        lineModel1.setLegendPosition("e");
-        Axis yAxis = lineModel1.getAxis(AxisType.Y);
-        yAxis.setMin(0);
-        yAxis.setMax(10);
+        
          
         lineModel2=initCategoryModel();
         lineModel2.setTitle("CA par années");
@@ -48,31 +41,17 @@ public class Chart implements Serializable {
         lineModel2.getAxis(AxisType.Y).setMax(50);
     }
      
-    private LineChartModel initLinearModel() {
-        LineChartModel model = new LineChartModel();
- 
-        LineChartSeries series1 = new LineChartSeries();
-        series1.setLabel("Series 1");
- 
-        series1.set(1, 2);
-        series1.set(2, 1);
-        series1.set(3, 3);
-        series1.set(4, 6);
-        series1.set(5, 8);
- 
-        LineChartSeries series2 = new LineChartSeries();
-        series2.setLabel("Series 2");
- 
-        series2.set(1, 6);
-        series2.set(2, 3);
-        series2.set(3, 2);
-        series2.set(4, 7);
-        series2.set(5, 9);
- 
-        model.addSeries(series1);
-        model.addSeries(series2);
+    private void createPieModel1() {
+        pieModel1 = new MyPieChart();
          
-        return model;
+        pieModel1.set("Vendeur 1", 540);
+        pieModel1.set("Vendeur 2", 325);
+        pieModel1.set("Vendeur 3", 702);
+        pieModel1.set("Vendeur 4", 421);
+        pieModel1.setShowDataLabels(true);
+         
+        pieModel1.setTitle("Partie de CA par vendeur");
+        pieModel1.setLegendPosition("w");
     }
      
     private LineChartModel initCategoryModel() {

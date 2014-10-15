@@ -33,4 +33,9 @@ public class Directeur extends User {
         this.sellerList = sellerList;
     }
     
+        @Override
+    public String getRole(){
+        return "Directeur";
+    }
+    
 }

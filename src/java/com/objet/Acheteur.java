@@ -35,5 +35,9 @@ public class Acheteur extends User {
         this.rmq = rmq;
     }
     
+        @Override
+    public String getRole(){
+        return "Acheteur";
+    }
     
 }

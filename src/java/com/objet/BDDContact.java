@@ -34,7 +34,6 @@ import org.primefaces.model.chart.LineChartSeries;
 @ManagedBean(name = "BDDContact")
 @SessionScoped
 public class BDDContact implements Serializable {
-    
 public List<Objet> getIDList()
 {
     List<Objet> list = new ArrayList<Objet>();
@@ -83,7 +82,7 @@ public List<Caracteristique> getCaracteristiqueList()
     try
     {
         Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "athulua");
+        con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
         String sql = "select * from caracteristique";
         ps= con.prepareStatement(sql); 
         rs= ps.executeQuery(); 
@@ -127,7 +126,7 @@ public Liaison getObjLiaison(int idObject)
     try
     {
         Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "athulua");
+        con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
         String sql = "select * from objet join liaison on objet.id_objet=liaison.id_objet join caracteristique on caracteristique.id_car=liaison.id_car where objet.id_objet="+idObject;
         ps= con.prepareStatement(sql); 
         rs= ps.executeQuery();
@@ -166,7 +165,7 @@ public static void insertInBDD(String query){
     try
     {
         Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "athulua");
+        con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
         ps= con.prepareStatement(query); 
         rs= ps.executeQuery(); 
     }
@@ -195,7 +194,7 @@ public static void insertInBDD(String query){
     try
     {
         Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "athulua");
+        con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
         ps= con.prepareStatement(query); 
         rs= ps.executeQuery(); 
     }
@@ -228,8 +227,62 @@ public static void insertInBDD(String query){
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "athulua");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
             ps= con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet="+id+" order by id_objet");  //change
+            rs= ps.executeQuery();
+            while(rs.next()){
+                v.setId(rs.getInt("id_objet"));
+                String carac=rs.getString("carac_desc");
+                if (carac.equals("log")){
+                    v.setLogin(rs.getString("value"));
+                }   
+                else if(carac.equals("password")){
+                    v.setPwd(rs.getString("value"));
+                }
+                else if(carac.equals("nom")){
+                    v.setNom(rs.getString("value"));
+                }
+                else if(carac.equals("prenom")){
+                    v.setPrenom(rs.getString("value"));
+                }
+            }
+            psOeuvre=con.prepareStatement("SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE carac_desc = \"type\" AND ( value = \"Peinture\" OR value = \"Sculpture\" ) AND id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE carac_desc = \"prix_vente\" AND value IS NOT NULL )) AND id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE carac_desc = 'vendeur' AND value ='"+v.getNom()+"') group by id_objet");
+            rsOeuvre= psOeuvre.executeQuery();
+            while(rsOeuvre.next()){
+                v.addOeuvreVendu(getOeuvreFromBDDWithID(rsOeuvre.getInt("id_objet")));
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                con.close();
+                ps.close();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        } 
+        return v;
+    }
+    
+    public static Vendeur getVendeurFromBDD(int id){
+        Vendeur v = new Vendeur();
+        PreparedStatement ps = null;
+        Connection con = null;
+        ResultSet rs = null;
+        PreparedStatement psOeuvre = null;
+        ResultSet rsOeuvre = null;
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
+            ps= con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet in (select id_objet from liaison where id_car=1 and value=  order by id_objet");  //change
             rs= ps.executeQuery();
             while(rs.next()){
                 v.setId(rs.getInt("id_objet"));
@@ -283,7 +336,7 @@ public static void insertInBDD(String query){
        try
        {
            Class.forName("com.mysql.jdbc.Driver");
-           con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "athulua");
+           con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
            ps= con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet="+id+" order by id_objet");  //change
            rs= ps.executeQuery();
            while(rs.next()){
@@ -337,7 +390,7 @@ public static void insertInBDD(String query){
        try
        {
            Class.forName("com.mysql.jdbc.Driver");
-           con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "athulua");
+           con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
            ps= con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet="+id+" order by id_objet");  //change
            rs= ps.executeQuery();
            while(rs.next()){
@@ -381,7 +434,7 @@ public static void insertInBDD(String query){
        return exp;
     }
     
-    public static Directeur getDirecteurFromBDDWithID(int id){
+    public Directeur getDirecteurFromBDDWithID(int id){
         Directeur dir = new Directeur();
         PreparedStatement ps = null;
        Connection con = null;
@@ -391,7 +444,7 @@ public static void insertInBDD(String query){
        try
        {
            Class.forName("com.mysql.jdbc.Driver");
-           con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "athulua");
+           con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
            ps= con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet="+id+" order by id_objet");  //change
            rs= ps.executeQuery();
            while(rs.next()){
@@ -445,7 +498,7 @@ public static void insertInBDD(String query){
        try
        {
            Class.forName("com.mysql.jdbc.Driver");
-           con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "athulua");
+           con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
            ps= con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet="+id+" order by id_objet");  //change
            rs= ps.executeQuery();
            while(rs.next()){
@@ -498,7 +551,7 @@ public static void insertInBDD(String query){
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "athulua");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
             ps= con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet="+id+" order by id_objet");  //change
             rs= ps.executeQuery(); 
             while(rs.next()){

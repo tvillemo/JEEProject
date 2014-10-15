@@ -9,7 +9,7 @@ package com.objet;
  *
  * @author tanguy
  */
-public class User {
+public abstract class User {
     protected String login;
     protected String pwd;
     protected String nom;
@@ -64,4 +64,6 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
+    
+    public abstract  String getRole();
 }

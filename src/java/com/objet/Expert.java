@@ -33,4 +33,9 @@ public class Expert extends User {
         OeuvreExpertisee=list;
     }
     
+        @Override
+    public String getRole(){
+        return "Expert";
+    }
+    
 }
