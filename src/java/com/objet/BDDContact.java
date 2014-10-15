@@ -44,7 +44,7 @@ public List<Objet> getIDList()
     try
     {
         Class.forName("com.mysql.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "athulua");
+        con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
         String sql = "select * from objet";
         ps= con.prepareStatement(sql); 
         rs= ps.executeQuery(); 
@@ -561,7 +561,7 @@ public static void insertInBDD(String query){
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "athulua");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
             ps= con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE carac_desc = 'log' AND value = '"+login+"') and id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE carac_desc = 'password' AND value = '"+pwd+"' order by id_objet) and carac_desc='type'");  //change
             rs= ps.executeQuery(); 
             while (rs.next()){
@@ -602,5 +602,7 @@ public static void insertInBDD(String query){
         }
         return u;
     }
+    
+    
     
 }
