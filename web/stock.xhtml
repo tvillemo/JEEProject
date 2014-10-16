@@ -55,12 +55,11 @@
                 <h:outputText value="Oeuvre" />
                 <h:form id="form">
                     <p:dataGrid var="oeuvre" value="#{ringView.selectedCar.oeuvreList}" columns="3" rows="3" paginator="true" id="test"
-        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
         rowsPerPageTemplate="1,3,6">
                     <p:panel header="#{oeuvre.nom}" style="text-align:center">
                         <h:panelGrid columns="1"  style="width:100%">
-                            <p:graphicImage value="/Ressources/#{oeuvre.nom}.jpg" width="100%" height="100%" class="zoom" id="img" />  
-                            <p:overlayPanel for="img" id="imgPanel" showEffect="blind" hideEffect="explode" showEvent="mouseover" hideEvent="mouseout"
+                            <p:graphicImage value="/Ressources/#{oeuvre.nom}.jpg" width="100%" height="100%" class="zoom" id="img#{ringView.selectedCar.id}" />  
+                            <p:overlayPanel for="img#{ringView.selectedCar.id}" id="imgPanel#{ringView.selectedCar.id}" showEffect="blind" hideEffect="explode" showEvent="mouseover" hideEvent="mouseout"
                                             dismissable="true" showCloseIcon="false">
                                <p:graphicImage value="/Ressources/#{oeuvre.nom}.jpg" width="100%" height="100%"/>  
                             </p:overlayPanel>
