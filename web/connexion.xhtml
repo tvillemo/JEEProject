@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+       
+    <h:head>
+        
+        <style>
+            body
+            {
+                text-align: left ;
+                font-size:medium;
+                font-family:Verdana, sans-serif;
+                min-height: 100%;
+            }
+            
+            html {
+                height: 100%;
+                min-height: 100%;
+            }
+
+            h1
+             {
+                  font-size: 40px;
+                    text-shadow: -1px -1px #eee, 1px 1px #888, -3px 0 4px #000;
+                    font-family: 'LearningCurveProRegular', Arial, serif;
+                    color:#ccc;
+                    padding:16px;
+                    font-weight:lighter; 
+                     border-width:1px;
+                    border-style:dashed;
+                    border-color:black;
+                    text-align:center;
+                    display:inline;
+                    line-height:92px;
+            }
+
+
+            p
+            {
+                text-align: justify ;
+                text-indent: 2em ;
+                line-height: 1.7em ;
+            }  
+            
+        </style>
+        
+        <title>Espace de connexion</title>
+    </h:head>
+
+    <h:body style="background-image:linear-gradient(#E0CDA9 75%,#677179)">
+        <center><h1>Votre espace de connexion</h1></center>
+        <br></br>
+        <br></br>
+        
+        <center>
+        <h:form>
+            <p:panel id="panel" header="Connexion" style="width: 500px; background-color: transparent; border-color: black" >
+                <p:messages id="msgs" />
+                <h:panelGrid columns="3" cellpadding="5">
+                    
+                    <p:outputLabel for="login" value="Login :" />
+                    <p:inputText id="login" value="#{BDDContact.login}" required="true" label="Login">
+                        <f:validateLength minimum="2" />
+                    </p:inputText>
+                    <p:message for="login" display="icon" />
+                    
+                    <p:outputLabel for="pwd" value="Mot de passe :" />
+                    <p:inputText id="pwd" type="password" value="#{BDDContact.pwd}" required="true" label="pwd">
+                        <f:validateLength minimum="2" />
+                    </p:inputText>
+                    <p:message for="pwd" display="icon" />
+                </h:panelGrid>
+
+                <p:commandButton value="Connecter" update="panel" action="#{BDDContact.allerALaPage()}" icon="ui-icon-check" />
+            </p:panel>
+        </h:form>  
+        </center>
+        
+        
+        
+        <h:form>
+        <p:dock position="bottom" itemWidth ="100">
+                <p:menuitem value="Accueil" icon="nous.jpg" action="index"/>
+                <p:menuitem value="Oeuvres" icon="oeuvre.jpg" action="oeuvres"/>
+                <p:menuitem value="Artistes" icon="artiste.jpg" action="artistes"/>
+                <p:menuitem value="Connexion" icon="connect.jpg" action="connexion"/>
+        </p:dock>
+        </h:form>
+    </h:body>
+    
+</html>
