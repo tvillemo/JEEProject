@@ -7,10 +7,9 @@
    xmlns:c="http://java.sun.com/jsp/jstl/core"
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:p="http://primefaces.org/ui">
-
     
     <h:head>
-        <meta charset="utf-8" />
+        
         <style>
             body
             {
@@ -41,51 +40,21 @@
                     line-height:92px;
             }
 
-
             p
             {
                 text-align: justify ;
                 text-indent: 2em ;
                 line-height: 1.7em ;
-            }
-            zoom {
-                height:400px;
-                margin:auto;
-            }
-            .zoom p {
-                text-align:left;
-            }
-            .zoom img {
-                width:160px;
-                height:140px;
-                border-image:2px;
-            }
-            .zoom img:hover {
-                width:400px;
-                height:300px;
-            }
+            }   
         </style>
         
-        <title>Bienvenue dans notre Galerie en ligne</title>
+        <title>Les oeuvres</title>
     </h:head>
-
+          
     <h:body style="background-image:linear-gradient(#E0CDA9 75%,#677179)">
 
-        <h1>Nous</h1>
-            <p>Nous sommes un groupe de passonnés d'art en tout genre : du classique au contemporain souhaitant vous faire connaitre des artistes locaux ou internationnaux. </p>
-            <p>Notre objectif est de partager avec vous nos découvertes autant des oeuvres que des artistes.</p>
-            <p>Venez nous rencontrer !!!</p>
-            <br></br>
-            
-        <h1>Nous situer</h1>
-            <p>Notre galerie d'art possede une enseigne physique dans le centre ville de Poitiers (86, Viennes).</p>
-            <p>Nous situer :</p>
-            <br></br>
-            <div class="zoom">
-                <p>
-                    <img src="poit.jpg" alt="Situation dans Poitiers" />
-                </p>
-            </div>
+        <h1>Les oeuvres</h1>
+
         
     <h:form>
         <p:dock position="bottom" itemWidth ="100">
@@ -93,7 +62,6 @@
                 <p:menuitem value="Oeuvres" icon="oeuvre.jpg" action="oeuvres"/>
                 <p:menuitem value="Artistes" icon="artiste.jpg" action="artistes"/>
                 <p:menuitem value="Connexion" icon="connect.jpg" action="connexion"/>
-                <p:menuitem value="Directeur" icon="Ressources/Pedro.jpg" action="director"/>
         </p:dock>
     </h:form> 
     </h:body>

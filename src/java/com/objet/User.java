@@ -12,7 +12,7 @@ import javax.faces.bean.SessionScoped;
  *
  * @author tanguy
  */
-@ManagedBean(name = "user")
+@ManagedBean(name = "USERS")
 @SessionScoped
 public abstract class User {
     protected String login;
@@ -30,6 +30,10 @@ public abstract class User {
         pwd=pass;
         nom=name;
         prenom=first;
+    }
+    
+    public void setRole(String role){
+     this.role=role;   
     }
     
     public String getLogin(){
