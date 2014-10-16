@@ -56,12 +56,12 @@
         <h1>Les oeuvres</h1>
 
        <h:form> 
-           <p:dataScroller value="#{dataScrollerView.oeuvres}" var="mesOeuvres" chunkSize="10">
+           <p:dataScroller value="#{dataScrollerView.oeuvres}" var="mesOeuvres" chunkSize="3">
                 <f:facet name="header">
                     Scroll Down to Load More
                 </f:facet>
 
-                <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                <h:panelGrid columns="2" style="width:100%" columnClasses="value">
                     <p:graphicImage name="/#{mesOeuvres.nom}.gif" /> 
 
                     <p:outputPanel>
@@ -73,7 +73,7 @@
                             <h:outputText value="#{mesOeuvres.prixEstime}" style="font-weight: bold"/>
 
                             <h:outputText value="Artiste:" />
-                            <h:outputText value="#{mesOeuvres.artiste}" style="font-weight: bold"/>
+                            <h:outputText value="#{mesOeuvres.artiste.nom}" style="font-weight: bold"/>
                         </h:panelGrid>
                     </p:outputPanel>
                 </h:panelGrid>

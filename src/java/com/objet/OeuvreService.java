@@ -17,6 +17,9 @@ public class OeuvreService {
     
     private List<Oeuvre> oeuvreList=new ArrayList<>();
     
+    public void setList(){
+        oeuvreList=BDDContact.getOeuvreFromBDD();
+    }
     public void addList(Oeuvre oe) {
         oeuvreList.add(oe);
     }

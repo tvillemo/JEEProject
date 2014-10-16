@@ -732,6 +732,96 @@ public static void insertInBDD(String query){
         return u;
     }
     
+    public static List<Oeuvre> getOeuvreFromBDD(){
+        List<Oeuvre> v=new ArrayList<Oeuvre>();
+        PreparedStatement ps = null;
+        Connection con = null;
+        ResultSet rs = null;
+        PreparedStatement psUser = null;
+        ResultSet rsUser = null;
+        PreparedStatement psOeuvre = null;
+        ResultSet rsOeuvre = null;
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
+            ps= con.prepareStatement("SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car where liaison.id_car=1 and (value='Sculpture' or value='Peinture') group by id_objet");  //change
+            rs= ps.executeQuery(); 
+            while(rs.next()){
+                Oeuvre u=new Oeuvre();
+                psOeuvre=con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car where id_objet="+rs.getInt("id_objet") +" order by id_objet");
+                rsOeuvre=psOeuvre.executeQuery();
+                while(rsOeuvre.next()){
+                    int id=rsOeuvre.getInt("id_objet");
+                String carac=rsOeuvre.getString("carac_desc");
+                u.setId(rsOeuvre.getInt("id_objet"));
+                if (carac.equals("vendeur")){
+                    psUser=con.prepareStatement("select id_objet from liaison where id_car=10 and value=(select value from liaison join caracteristique on liaison.id_car=caracteristique.id_car where id_objet="+id+" and carac_desc='vendeur' group by id_objet)");
+                    rsUser=psUser.executeQuery();
+                    if (rsUser.next()){
+                        u.setSeller(getVendeurFromBDDWithID(rsUser.getInt("id_objet")));
+                    }
+                }
+                else if(carac.equals("acheteur")){
+                   psUser=con.prepareStatement("select id_objet from liaison where id_car=10 and value=(select value from liaison join caracteristique on liaison.id_car=caracteristique.id_car where id_objet="+id+" and carac_desc='acheteur' group by id_objet)");
+                   rsUser=psUser.executeQuery();
+                    if (rsUser.next()){
+                        u.setSeller(getVendeurFromBDDWithID(rsUser.getInt("id_objet")));
+                    }
+                }
+                else if(carac.equals("expert")){
+                    psUser=con.prepareStatement("select id_objet from liaison where id_car=10 and value=(select value from liaison join caracteristique on liaison.id_car=caracteristique.id_car where id_objet="+id+" and carac_desc='expert' group by id_objet)");
+                    rsUser=psUser.executeQuery();
+                    if (rsUser.next()){
+                        u.setSeller(getVendeurFromBDDWithID(rsUser.getInt("id_objet")));
+                    }
+                }
+                else if(carac.equals("type")){
+                    u.setType(rsOeuvre.getString("value"));
+                }
+                else if(carac.equals("remarque")){
+                    u.setRmq(rsOeuvre.getString("value"));
+                }
+                else if(carac.equals("prix_estime")){
+                    u.setPrixEstime(rsOeuvre.getFloat("value"));
+                }
+                else if(carac.equals("prix_vente")){
+                    u.setPrixVendu(rsOeuvre.getFloat("value"));
+                }
+                else if(carac.equals("commission")){
+                    u.setCommission(rsOeuvre.getFloat("value"));
+                }
+                else if(carac.equals("date")){
+                    u.setDate(rsOeuvre.getDate("value"));
+                }
+                 else if(carac.equals("nom")){
+                    u.setNom(rsOeuvre.getString("value"));
+                }
+            }
+                v.add(u);
+                System.out.print(v.size());
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                con.close();
+                ps.close();
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+        } 
+        
+        return v;
+    }
+    
     public User connectUserFromBDDWithLoginAndPwd(){
         User u=null;
         PreparedStatement ps = null;
@@ -779,12 +869,11 @@ public static void insertInBDD(String query){
                 e.printStackTrace();
             }
         }
-        System.out.println("fin");
         return u;
     }
     
-    public String allerALaPage() throws IOException{
-        
+    public String allerALaPage() throws IOException{ 
+     try {   
         User u = connectUserFromBDDWithLoginAndPwd();
         String role = null;
         
@@ -826,11 +915,13 @@ public static void insertInBDD(String query){
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             HttpServletRequest request = (HttpServletRequest) ec.getRequest();
             request.getSession(false).invalidate(); 
-            return "/artistes";
+            return "/artistes"; 
         }
-        else {
-            return "/connexion";
-        }
+     }
+     catch(NullPointerException e) {
+         System.err.println("Erreur connection");   
+     }
+       return "/index";
     }
 
 }

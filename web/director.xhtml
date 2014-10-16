@@ -26,40 +26,17 @@
     </h:head>
 
     <h:body style="background-image:linear-gradient(#E0CDA9 75%,#677179)">
-        <center>
-            <h1 style="color: #0000FF">Bienvenu directeur #{BDDContact.getDirecteurFromBDDWithID(1).getNom()}</h1>
-        </center>
-        
-       <p:chart type="line" model="#{chart.lineModel2}" style="height:400px;width:50%;"/>
-       
-        <p:chart id="pie1" widgetVar="pie" type="pie" model="#{chart.pieModel1}" style="height:400px;width:40%;position: relative;left: 55%; top:-400px;">
-            <p:dialog header="Vendeurs" widgetVar="dlg2" modal="true" height="100">
-                <p:dataTable var="seller" value="#{BDDContact.getDirecteurFromBDDWithID(1).sellerList}" rows="5" paginator="true">
-                    <p:column headerText="Nom">
-                        <h:outputText value="#{seller.nom}" />
-                    </p:column>
- 
-                    <p:column headerText="Total vendu">
-                        <h:outputText value="#{seller.getTotal()}" />
-                    </p:column>
- 
-                    <p:column headerText="Login">
-                        <h:outputText value="#{seller.login}" />
-                    </p:column>
- 
-                </p:dataTable>
-            </p:dialog>
-            <p:ajax onstart="PF('dlg2').show();"/>
-        </p:chart>
+        <h1> Vous avez fait erreur, veuillez recommencer !!!!!!!</h1>
        
            
-       <h:form>
-       <p:dock position="bottom" itemWidth="70">
-            <p:menuitem value="Accueil" icon="Ressources/accueil.gif" action="index"/>
-            <p:menuitem value="Détails" icon="Ressources/images.jpeg" action="detail" />
-            <p:menuitem value="Stock" icon="Ressources/index.jpeg" action="stock" />
+    <h:form>
+        <p:dock position="bottom" itemWidth ="100">
+                <p:menuitem value="Accueil" icon="nous.jpg" action="index"/>
+                <p:menuitem value="Oeuvres" icon="oeuvre.jpg" action="oeuvres"/>
+                <p:menuitem value="Artistes" icon="artiste.jpg" action="artistes"/>
+                <p:menuitem value="Connexion" icon="connect.jpg" action="connexion"/>
         </p:dock>
-       </h:form>
+    </h:form> 
     </h:body>
 
 </html>
