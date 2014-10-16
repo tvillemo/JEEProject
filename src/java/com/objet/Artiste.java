@@ -6,15 +6,16 @@
 package com.objet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author tanguy
  */
 public class Artiste extends User{
-    private ArrayList<Oeuvre> OeuvreList=new ArrayList<>();
+    private List<Oeuvre> OeuvreList=new ArrayList<>();
 
-    public ArrayList<Oeuvre> getOeuvreList() {
+    public List<Oeuvre> getOeuvreList() {
         return OeuvreList;
     }
 
@@ -22,7 +23,7 @@ public class Artiste extends User{
         this.OeuvreList.add(o);
     }
     
-    public void setOeuvreList(ArrayList<Oeuvre> OeuvreList) {
+    public void setOeuvreList(List<Oeuvre> OeuvreList) {
         this.OeuvreList = OeuvreList;
     }
    

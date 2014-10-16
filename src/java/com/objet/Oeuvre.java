@@ -23,6 +23,9 @@ public class Oeuvre {
     private float commission;
     private int id;
     private Date date; // a compléter
+    private String nom;
+
+    
  
     public Oeuvre(){};
     
@@ -124,6 +127,14 @@ public class Oeuvre {
     
     public Date getDate(){
         return this.date;
+    }
+    
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 }
 
