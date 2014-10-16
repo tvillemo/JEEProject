@@ -13,7 +13,15 @@ import java.util.ArrayList;
  */
 public class Acheteur extends User {
     private String rmq;
-    private ArrayList<Oeuvre> OeuvreAchetee = new ArrayList<>();
+    private ArrayList<Oeuvre> oeuvreAchetee = new ArrayList<>();
+
+    public ArrayList<Oeuvre> getOeuvreAchetee() {
+        return oeuvreAchetee;
+    }
+
+    public void setOeuvreAchetee(ArrayList<Oeuvre> oeuvreAchetee) {
+        this.oeuvreAchetee = oeuvreAchetee;
+    }
     
     public Acheteur(){
         
@@ -24,7 +32,7 @@ public class Acheteur extends User {
     }
 
     public void addOeuvreAchetee(Oeuvre o){
-        this.OeuvreAchetee.add(o);
+        this.oeuvreAchetee.add(o);
     }
     
     public String getRmq() {

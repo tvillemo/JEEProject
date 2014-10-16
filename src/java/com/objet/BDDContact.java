@@ -298,34 +298,41 @@ public static void insertInBDD(String query){
     
     public static ArrayList<Artiste> getArtisteFromBDD(){
         ArrayList<Artiste> a = new ArrayList<Artiste>();
-        Artiste v = new Artiste();
+        
         PreparedStatement ps = null;
         Connection con = null;
         ResultSet rs = null;
         PreparedStatement psOeuvre = null;
         ResultSet rsOeuvre = null;
+        PreparedStatement psArtiste = null;
+        ResultSet rsArtiste= null;
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
-            ps= con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet in (select id_objet from liaison where id_car=1 and value=\"Artiste\"  order by id_objet");  //change
+            ps= con.prepareStatement("SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet in (select id_objet from liaison where id_car=1 and value=\"Artiste\")  group by id_objet");  //change
             rs= ps.executeQuery();
-            int i=0;
             while(rs.next()){
+                Artiste v = new Artiste();
+                psArtiste=con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet="+rs.getInt("id_objet")+" order by id_objet");
+                rsArtiste=psArtiste.executeQuery();
+                while(rsArtiste.next()){
                 v.setRole("Vendeur");
-                v.setId(rs.getInt("id_objet"));
-                String carac=rs.getString("carac_desc");
+                v.setId(rsArtiste.getInt("id_objet"));
+                String carac=rsArtiste.getString("carac_desc");
                 if (carac.equals("log")){
-                    v.setLogin(rs.getString("value"));
+                    v.setLogin(rsArtiste.getString("value"));
                 }   
                 else if(carac.equals("password")){
-                    v.setPwd(rs.getString("value"));
+                    v.setPwd(rsArtiste.getString("value"));
                 }
                 else if(carac.equals("nom")){
-                    v.setNom(rs.getString("value"));
+                    v.setNom(rsArtiste.getString("value"));
                 }
                 else if(carac.equals("prenom")){
-                    v.setPrenom(rs.getString("value"));
+                    v.setPrenom(rsArtiste.getString("value"));
+                }
+                
                 }
                 a.add(v);
             }
@@ -391,6 +398,73 @@ public static void insertInBDD(String query){
            rsOeuvre= psOeuvre.executeQuery();
            while(rsOeuvre.next()){
                a.addOeuvreAchetee(getOeuvreFromBDDWithID(rsOeuvre.getInt("id_objet")));
+           }
+       }
+       catch(Exception e)
+       {
+           e.printStackTrace();
+       }
+       finally
+       {
+           try
+           {
+               con.close();
+               ps.close();
+           }
+           catch(Exception e)
+           {
+               e.printStackTrace();
+           }
+       }
+       return a;
+    }
+    
+    public static List<Acheteur> getAcheteurFromBDD(){
+       List<Acheteur> a = new ArrayList<Acheteur>();
+       PreparedStatement ps = null;
+       Connection con = null;
+       ResultSet rs = null;
+       PreparedStatement psOeuvre = null;
+       ResultSet rsOeuvre = null;
+       PreparedStatement psAcheteur = null;
+       ResultSet rsAcheteur = null;
+       try
+       {
+           Class.forName("com.mysql.jdbc.Driver");
+           con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
+           psAcheteur= con.prepareStatement("SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car where (liaison.id_car=1 and value='Acheteur') group by id_objet");  //change
+           rsAcheteur= psAcheteur.executeQuery();
+           while(rsAcheteur.next()){
+               Acheteur v = new Acheteur();
+               ps=con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car where id_objet="+rsAcheteur.getInt("id_objet")+" order by id_objet");
+               rs=ps.executeQuery();
+               while(rs.next()){
+               v.setRole("Acheteur");
+               v.setId(rs.getInt("id_objet"));
+               String carac=rs.getString("carac_desc");
+               if (carac.equals("log")){
+                   v.setLogin(rs.getString("value"));
+               }   
+               else if(carac.equals("password")){
+                   v.setPwd(rs.getString("value"));
+               }
+               else if(carac.equals("nom")){
+                   v.setNom(rs.getString("value"));
+               }
+               else if(carac.equals("prenom")){
+                   v.setPrenom(rs.getString("value"));
+               }
+               
+               
+           }
+               a.add(v);
+           }
+           for(Acheteur currentAcheteur : a){
+           psOeuvre=con.prepareStatement("SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE carac_desc = \"type\" AND ( value = \"Peinture\" OR value = \"Sculpture\" ) AND id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE carac_desc = \"prix_vente\" AND value IS NOT NULL )) AND id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE carac_desc = 'acheteur' AND value ='"+currentAcheteur.getNom()+"') group by id_objet");
+           rsOeuvre= psOeuvre.executeQuery();
+           while(rsOeuvre.next()){
+               currentAcheteur.addOeuvreAchetee(getOeuvreFromBDDWithID(rsOeuvre.getInt("id_objet")));
+           }
            }
        }
        catch(Exception e)
@@ -583,6 +657,8 @@ public static void insertInBDD(String query){
         PreparedStatement ps = null;
         Connection con = null;
         ResultSet rs = null;
+        PreparedStatement psUser = null;
+        ResultSet rsUser = null;
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
@@ -593,13 +669,25 @@ public static void insertInBDD(String query){
                 String carac=rs.getString("carac_desc");
                 u.setId(rs.getInt("id_objet"));
                 if (carac.equals("vendeur")){
-                    u.setSeller(getVendeurFromBDDWithID(rs.getInt("value")));
+                    psUser=con.prepareStatement("select id_objet from liaison where id_car=10 and value=(select value from liaison join caracteristique on liaison.id_car=caracteristique.id_car where id_objet="+id+" and carac_desc='vendeur' group by id_objet)");
+                    rsUser=psUser.executeQuery();
+                    if (rsUser.next()){
+                        u.setSeller(getVendeurFromBDDWithID(rsUser.getInt("id_objet")));
+                    }
                 }
                 else if(carac.equals("acheteur")){
-                   u.setBuyer(getAcheteurFromBDDWithID(rs.getInt("value")));
+                   psUser=con.prepareStatement("select id_objet from liaison where id_car=10 and value=(select value from liaison join caracteristique on liaison.id_car=caracteristique.id_car where id_objet="+id+" and carac_desc='acheteur' group by id_objet)");
+                   rsUser=psUser.executeQuery();
+                    if (rsUser.next()){
+                        u.setSeller(getVendeurFromBDDWithID(rsUser.getInt("id_objet")));
+                    }
                 }
                 else if(carac.equals("expert")){
-                    u.setExp(getExpertFromBDDWithID(rs.getInt("value")));
+                    psUser=con.prepareStatement("select id_objet from liaison where id_car=10 and value=(select value from liaison join caracteristique on liaison.id_car=caracteristique.id_car where id_objet="+id+" and carac_desc='expert' group by id_objet)");
+                    rsUser=psUser.executeQuery();
+                    if (rsUser.next()){
+                        u.setSeller(getVendeurFromBDDWithID(rsUser.getInt("id_objet")));
+                    }
                 }
                 else if(carac.equals("type")){
                     u.setType(rs.getString("value"));
@@ -610,7 +698,7 @@ public static void insertInBDD(String query){
                 else if(carac.equals("prix_estime")){
                     u.setPrixEstime(rs.getFloat("value"));
                 }
-                else if(carac.equals("prix_vendu")){
+                else if(carac.equals("prix_vente")){
                     u.setPrixVendu(rs.getFloat("value"));
                 }
                 else if(carac.equals("commission")){
@@ -618,6 +706,9 @@ public static void insertInBDD(String query){
                 }
                 else if(carac.equals("date")){
                     u.setDate(rs.getDate("value"));
+                }
+                 else if(carac.equals("nom")){
+                    u.setNom(rs.getString("value"));
                 }
             }
         }
@@ -700,6 +791,18 @@ public static void insertInBDD(String query){
         if (u instanceof Directeur) {
             role = ((Directeur)u).getRole();
         }
+        else if(u instanceof Vendeur){
+            role = ((Vendeur)u).getRole();
+        }
+        else if(u instanceof Acheteur){
+            role = ((Acheteur)u).getRole();
+        }
+        else if(u instanceof Artiste){
+            role = ((Artiste)u).getRole();
+        }
+        else if(u instanceof Expert){
+            role = ((Expert)u).getRole();
+        }
         
         if (role.equals ("Directeur")) {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -711,7 +814,7 @@ public static void insertInBDD(String query){
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             HttpServletRequest request = (HttpServletRequest) ec.getRequest();
             request.getSession(false).invalidate(); 
-            return "/vendeur";
+            return "/Vendeur";
         }
         else if (role.equals ("Expert")) {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
