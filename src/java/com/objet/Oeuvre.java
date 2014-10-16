@@ -5,7 +5,9 @@
  */
 package com.objet;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -24,12 +26,13 @@ public class Oeuvre {
     private int id;
     private Date date; // a compléter
     private String nom;
+    // http://www.primefaces.org/showcase/ui/data/datascroller/basic.xhtml
 
     
  
     public Oeuvre(){};
     
-    public Oeuvre(Artiste art, String obs,float estim,float prix,Vendeur vend,Expert expert,Acheteur ach,float comm,Date d){
+    public Oeuvre(Artiste art, String obs,float estim,float prix,Vendeur vend,Expert expert,Acheteur ach,float comm,Date d, String name){
         artiste=art;
         rmq=obs;
         prixEstime=estim;
@@ -39,8 +42,9 @@ public class Oeuvre {
         buyer=ach;
         commission=comm;
         date=d;
+        nom = name;
     }
-
+    
     public Artiste getArtiste() {
         return artiste;
     }
