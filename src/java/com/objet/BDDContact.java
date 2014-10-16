@@ -271,41 +271,46 @@ public static void insertInBDD(String query){
         return v;
     }
     
-    public static ArrayList<Artiste> getArtisteFromBDD(){
-        ArrayList<Artiste> a = new ArrayList<Artiste>();
-        Artiste v = new Artiste();
+    public static List<Artiste> getArtisteFromBDD(){
+        List<Artiste> a = new ArrayList<Artiste>();
         PreparedStatement ps = null;
         Connection con = null;
         ResultSet rs = null;
         PreparedStatement psOeuvre = null;
         ResultSet rsOeuvre = null;
+        PreparedStatement psArtiste = null;
+        ResultSet rsArtiste = null;
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/galerieart", "root", "");
-            ps= con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet in (select id_objet from liaison where id_car=1 and value=\"Artiste\"  order by id_objet");  //change
+            ps= con.prepareStatement("SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet in (select id_objet from liaison where id_car=1 and value='Artiste')  group by id_objet");  //change
             rs= ps.executeQuery();
-            int i=0;
             while(rs.next()){
-                i++;
-                v.setId(rs.getInt("id_objet"));
-                String carac=rs.getString("carac_desc");
-                if (carac.equals("log")){
-                    v.setLogin(rs.getString("value"));
-                }   
-                else if(carac.equals("password")){
-                    v.setPwd(rs.getString("value"));
-                }
-                else if(carac.equals("nom")){
-                    v.setNom(rs.getString("value"));
-                }
-                else if(carac.equals("prenom")){
-                    v.setPrenom(rs.getString("value"));
+                Artiste v = new Artiste();
+                psArtiste= con.prepareStatement("SELECT id_objet, carac_desc, value FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet="+rs.getInt("id_objet"));
+                rsArtiste= psArtiste.executeQuery();
+                while(rsArtiste.next()){
+                    v.setId(rsArtiste.getInt("id_objet"));
+                    String carac=rsArtiste.getString("carac_desc");
+                    if (carac.equals("log")){
+                        v.setLogin(rsArtiste.getString("value"));
+                    }   
+                    else if(carac.equals("password")){
+                        v.setPwd(rsArtiste.getString("value"));
+                    }
+                    else if(carac.equals("nom")){
+                         v.setNom(rsArtiste.getString("value"));
+                    }
+                    else if(carac.equals("prenom")){
+                        v.setPrenom(rsArtiste.getString("value"));
+                    }
+                
                 }
                 a.add(v);
             }
             for (Artiste artisteActuel : a){
-                psOeuvre=con.prepareStatement("SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE carac_desc = \"type\" AND ( value = \"Peinture\" OR value = \"Sculpture\" ) AND id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE carac_desc = \"prix_vente\" AND value IS NOT NULL )) AND id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE carac_desc = 'Artiste' AND value ='"+artisteActuel.getNom()+"') group by id_objet");
+                psOeuvre=con.prepareStatement("SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE carac_desc = \"type\" AND ( value = \"Peinture\" OR value = \"Sculpture\" ) AND id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car)) AND id_objet in (SELECT id_objet FROM liaison JOIN caracteristique ON liaison.id_car = caracteristique.id_car WHERE carac_desc = 'Artiste' AND value ='"+artisteActuel.getNom()+"') group by id_objet");
                 rsOeuvre= psOeuvre.executeQuery();
                 while(rsOeuvre.next()){
                     artisteActuel.addOeuvre(getOeuvreFromBDDWithID(rsOeuvre.getInt("id_objet")));
@@ -581,7 +586,7 @@ public static void insertInBDD(String query){
                 else if(carac.equals("prix_estime")){
                     u.setPrixEstime(rs.getFloat("value"));
                 }
-                else if(carac.equals("prix_vendu")){
+                else if(carac.equals("prix_vente")){
                     u.setPrixVendu(rs.getFloat("value"));
                 }
                 else if(carac.equals("commission")){
@@ -589,6 +594,9 @@ public static void insertInBDD(String query){
                 }
                 else if(carac.equals("date")){
                     u.setDate(rs.getDate("value"));
+                }
+                else if(carac.equals("nom")){
+                    u.setNom(rs.getString("value"));
                 }
             }
         }

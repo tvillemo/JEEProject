@@ -5,16 +5,22 @@
  */
 package com.objet;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
 /**
  *
  * @author tanguy
  */
+@ManagedBean(name = "user")
+@SessionScoped
 public abstract class User {
     protected String login;
     protected String pwd;
     protected String nom;
     protected String prenom;
     int id=-1;
+    protected String role;
     
     public User(){
     }

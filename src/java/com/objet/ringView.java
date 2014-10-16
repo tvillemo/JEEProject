@@ -11,19 +11,27 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
  
 @ManagedBean
 public class ringView implements Serializable {
      
+    private List<Oeuvre> listOeuvre;
     private List<Artiste> artiste;
     private Artiste selectedArtiste;
+
      
     @PostConstruct
     public void init() {
-        artiste = new ArrayList<Artiste>();
-        
-        
-        artiste.add(BDDContact.getArtisteFromBDDWithID(3));
+        artiste = BDDContact.getArtisteFromBDD();
+    }
+    
+    public void setOeuvre(List<Oeuvre> oeuvre){
+        listOeuvre=selectedArtiste.getOeuvreList();
+    }
+    
+    public List<Oeuvre> getOeuvre(){
+        return listOeuvre;
     }
  
     public List<Artiste> getCars() {
