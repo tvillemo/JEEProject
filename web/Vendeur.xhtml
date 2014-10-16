@@ -7,11 +7,10 @@
    xmlns:c="http://java.sun.com/jsp/jstl/core"
    xmlns:f="http://java.sun.com/jsf/core"
    xmlns:p="http://primefaces.org/ui">
-
-    
+       
     <h:head>
-        <meta charset="utf-8" />
-        <style>
+        
+                <style>
             body
             {
                 text-align: left ;
@@ -26,7 +25,7 @@
             }
 
             h1
-            {
+             {
                   font-size: 40px;
                     text-shadow: -1px -1px #eee, 1px 1px #888, -3px 0 4px #000;
                     font-family: 'LearningCurveProRegular', Arial, serif;
@@ -47,46 +46,24 @@
                 text-align: justify ;
                 text-indent: 2em ;
                 line-height: 1.7em ;
-            }
-            zoom {
-                height:400px;
-                margin:auto;
-            }
-            .zoom p {
-                text-align:left;
-            }
-            .zoom img {
-                width:160px;
-                height:140px;
-                border-image:2px;
-            }
-            .zoom img:hover {
-                width:400px;
-                height:300px;
-            }
+            }   
         </style>
         
-        <title>Bienvenue dans notre Galerie en ligne</title>
+        <title>Les artistes</title>
     </h:head>
-
+    
     <h:body style="background-image:linear-gradient(#E0CDA9 75%,#677179)">
-
-        <h1>Nous</h1>
-            <p>Nous sommes un groupe de passonnés d'art en tout genre : du classique au contemporain souhaitant vous faire connaitre des artistes locaux ou internationnaux. </p>
-            <p>Notre objectif est de partager avec vous nos découvertes autant des oeuvres que des artistes.</p>
-            <p>Venez nous rencontrer !!!</p>
-            <br></br>
-            
-        <h1>Nous situer</h1>
-            <p>Notre galerie d'art possede une enseigne physique dans le centre ville de Poitiers (86, Viennes).</p>
-            <p>Nous situer :</p>
-            <br></br>
-            <div class="zoom">
-                <p>
-                    <img src="poit.jpg" alt="Situation dans Poitiers" />
-                </p>
-            </div>
-        
+        <h:form>
+    <p:mindmap value="#{mindmapView.root}" style="width: 100%;height: 600px;background: transparent;border : none">
+        <p:ajax event="select" listener="#{mindmapView.onNodeSelect}" />
+        <p:ajax event="dblselect" listener="#{mindmapView.onNodeDblselect}" update="output" oncomplete="PF('details').show();" />
+    </p:mindmap>
+ 
+    <p:dialog widgetVar="details" header="Node Details" resizable="false" modal="true" showEffect="fade" hideEffect="fade">
+        <h:outputText id="output" value="#{minmapView.selectedNode.data}" />
+    </p:dialog>
+</h:form>
+    
     <h:form>
         <p:dock position="bottom" itemWidth ="100">
                 <p:menuitem value="Accueil" icon="nous.jpg" action="index"/>
@@ -94,7 +71,6 @@
                 <p:menuitem value="Artistes" icon="artiste.jpg" action="stock"/>
                 <p:menuitem value="Connexion" icon="connect.jpg" action="connexion"/>
         </p:dock>
-    </h:form> 
+    </h:form>    
     </h:body>
-
 </html>
